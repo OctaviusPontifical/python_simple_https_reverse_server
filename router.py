@@ -1,6 +1,6 @@
 from config import setting
 
-ROUTE_LIST_PATH = 'config/route'#setting.get_param("ROUTE_LIST_PATH")
+ROUTE_LIST_PATH = setting.get_param("ROUTE_LIST_PATH")
 
 
 def parser(data):

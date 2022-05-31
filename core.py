@@ -4,14 +4,15 @@ import ssl
 import time
 from _thread import start_new_thread
 import router
+from config import setting
 from http_code import http_code
 from router import Router
 
-REVERSE_SERVER_PORT = 8443#int(setting.get_param("REVERSE_SERVER_PORT"))
-REVERSE_CONNECTIONS = 10#int(setting.get_param("REVERSE_CONNECTIONS"))
-REVERSE_SERVER_WAIT = 5#int(setting.get_param("REVERSE_SERVER_WAIT"))
-REVERSE_BUFFER_SIZE = 4096#int(setting.get_param("REVERSE_BUFFER_SIZE"))
-REVERSE_TIMEOUT_MAX = 15#int(setting.get_param("REVERSE_TIMEOUT_MAX"))
+REVERSE_SERVER_PORT = int(setting.get_param("REVERSE_SERVER_PORT"))
+REVERSE_CONNECTIONS = int(setting.get_param("REVERSE_CONNECTIONS"))
+REVERSE_SERVER_WAIT = int(setting.get_param("REVERSE_SERVER_WAIT"))
+REVERSE_BUFFER_SIZE = int(setting.get_param("REVERSE_BUFFER_SIZE"))
+REVERSE_TIMEOUT_MAX = int(setting.get_param("REVERSE_TIMEOUT_MAX"))
 
 
 def client_conect(host, port):
@@ -46,7 +47,6 @@ def reverse_server():
 
 def reverse_proxy_loop(server,sours):
     temp = server.recv(REVERSE_BUFFER_SIZE)
-    print(temp)
     dest, port,path, code_route = Router.routing(temp)
     if code_route !=0:
         server.send(http_code(code_route))
@@ -57,8 +57,6 @@ def reverse_proxy_loop(server,sours):
         server.send(http_code(code_clien))
         server.close()
         return
-    req = router.new_request(temp,dest,port,path)
-    print(req)
     client.send(router.new_request(temp,dest,port,path))
 
 
@@ -73,7 +71,6 @@ def reverse_proxy_loop(server,sours):
             for in_ in recv:
                 try:
                     data = in_.recv(REVERSE_BUFFER_SIZE)
-                    print(data)
                     if in_ is client:
                         out = server
                     else:
@@ -100,7 +97,6 @@ def reverse_proxy_loop(server,sours):
             time_wait += 1
         if REVERSE_TIMEOUT_MAX == time_wait:
             break
-    print("close")
     server.close()
     client.close()
 

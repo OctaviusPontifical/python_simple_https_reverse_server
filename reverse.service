@@ -1,0 +1,10 @@
+[Unit]
+Description=Simple revers proxy
+After=multi-user.target
+[Service]
+WorkingDirectory=/opt/reverse_proxy
+Type=simple
+Restart=always
+ExecStart=/usr/bin/python3 /opt/reverse_proxy/core.py
+[Install]
+WantedBy=multi-user.target

@@ -1,4 +1,3 @@
 path:ip\name:port:source for blocking
 app:kremlin.ru:80:
 manager:example.com:80:
-secure:0.0.0.0:22:
