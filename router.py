@@ -28,7 +28,7 @@ def new_request(data,dest,port,rev):
         all_head = b''
         for key,value in headers_list.items():
             all_head+= b'%s: %s\r\n' % (key,value)
-        return title+all_head+b'\r\n'
+        return title+all_head+b'\r\n'+body
     except Exception as e :
         print(e)
         return None,500
@@ -53,7 +53,6 @@ class Router:
             print("File mot found ")
         except Exception as e:
             print('Не предвиденная ошибка в классе Route : ', e)
-        print("********** Init Route **********")
 
     @classmethod
     def routing(self,data):
